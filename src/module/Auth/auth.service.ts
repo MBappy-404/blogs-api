@@ -24,7 +24,7 @@ const login = async (payload: { email: string; password: string }) => {
   const isUserBlocked = user.isBlocked === true
 
   if (isUserBlocked) {
-    throw new Error('User is blocked')
+    throw new AppError(401, 'Unauthorized','This user is blocked')
   }
 
   const isPasswordMatched = await bcrypt.compare(

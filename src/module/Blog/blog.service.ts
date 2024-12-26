@@ -1,3 +1,4 @@
+import AppError from '../../errors/AppError'
 import QueryFilter from '../../queryFilter/queryFilter'
 import { User } from '../User/user.model'
 import { searchableFields } from './blog.constant'
@@ -6,9 +7,11 @@ import { Blog } from './blog.model'
 
 const createBlog = async (payload: IBlog): Promise<IBlog> => {
   const authorId = payload?.author
+  // console.log(authorId);
+  
   const isAuthorExist = await User.findById(authorId)
   if (!isAuthorExist) {
-    throw new Error('Author is Not Found')
+    throw new AppError(404, 'Author not found','Author does not exist in our records')
   }
   const result = await Blog.create(payload)
   const populatedBlog = await Blog.findById(result._id).populate(
@@ -27,11 +30,7 @@ const getAllBlogs = async (query: Record<string, unknown>) => {
   const result = await blogQuery.modelQuery
   return result
 }
-
-const getSingleBlog = async (id: string): Promise<IBlog | null> => {
-  const result = await Blog.findById(id).populate('author')
-  return result
-}
+ 
 
 const updateBlog = async (id: string, payload: Partial<IBlog>) => {
   const result = await Blog.findByIdAndUpdate(id, payload, { new: true })
@@ -46,7 +45,6 @@ const deleteBlog = async (id: string) => {
 export const BlogService = {
   createBlog,
   getAllBlogs,
-  getSingleBlog,
   updateBlog,
   deleteBlog,
 }

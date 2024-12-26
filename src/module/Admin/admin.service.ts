@@ -1,3 +1,4 @@
+import AppError from '../../errors/AppError'
 import { Blog } from '../Blog/blog.model'
 import { User } from '../User/user.model'
 
@@ -6,11 +7,11 @@ const blockUserByAdmin = async (id: string) => {
     const user = await User.findById(id)
 
     if(!user){
-        throw new Error('User not found')
+        throw new AppError(404,'User not found','User does not exist in our records')
     }
 
     if(user?.isBlocked === true){
-        throw new Error('User is already blocked')
+        throw new AppError(400,'User already blocked','This user is already blocked')
     }
 
   const result = await User.findByIdAndUpdate(

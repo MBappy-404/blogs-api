@@ -3,6 +3,8 @@ import { authRoutes } from './module/Auth/auth.route';
 import { blogRoutes } from './module/Blog/blog.route';
 import { AdminRoutes } from './module/Admin/admin.route';
 import globalErrorHandler from './middleware/globalError';
+import { UserRoutes } from './module/User/user.route';
+ 
  
 
 
@@ -16,6 +18,7 @@ import globalErrorHandler from './middleware/globalError';
 app.use('/api/auth', authRoutes)
 app.use('/api/blogs',blogRoutes )
 app.use('/api/admin', AdminRoutes)
+app.use('/api/users', UserRoutes)
 
  app.get('/', (req:Request, res:Response) => {
 
